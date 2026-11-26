@@ -1,48 +1,79 @@
 <div class='container mt-5'>
-  {{#each errorMsgs}}
-    <p class='text-center text-danger'>{{message}}</p>
-  {{/each}}
-  <form action='/customers/add' method='POST'>
-    <div class='row mb-3'>
-      <label for='inputName' class='col-sm-2 col-form-label'>Name</label>
-      <div class='col-sm-10'>
-        <input type='text' value='{{id}}' class='d-none' name='id' />
-        <input
-          type='text'
-          class='form-control'
-          id='inputName'
-          name='name'
-          value='{{name}}'
-          required
-        />
+  <div class='row justify-content-center'>
+    <div class='col-md-8 col-lg-6'>
+
+      <div class='card card-custom border-0 p-4 p-md-5'>
+        <div class='text-center mb-4'>
+          <div class='d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary p-3 mb-3' style='width: 58px; height: 58px;'>
+            <i class='bi bi-person-lines-fill fs-3'></i>
+          </div>
+          <h2 class='fw-bold text-dark fs-4 mb-1'>Formulir Pelanggan</h2>
+          <p class='text-muted small'>Silakan isi informasi lengkap pelanggan di bawah ini.</p>
+        </div>
+
+        {{#each errorMsgs}}
+          <p class='text-center text-danger'>{{message}}</p>
+        {{/each}}
+
+        <form action='/customers/add' method='POST'>
+          <input type='text' value='{{id}}' class='d-none' name='id' />
+
+          <div class='mb-3'>
+            <label for='inputName' class='form-label small fw-bold text-secondary'>
+              <i class='bi bi-person me-1'></i> Nama Lengkap
+            </label>
+            <input
+              type='text'
+              class='form-control form-control-lg fs-6'
+              id='inputName'
+              name='name'
+              value='{{name}}'
+              placeholder='Contoh: Abdul Ghoni'
+              required
+            />
+          </div>
+
+          <div class='mb-3'>
+            <label for='inputEmail' class='form-label small fw-bold text-secondary'>
+              <i class='bi bi-envelope me-1'></i> Alamat Email
+            </label>
+            <input
+              type='email'
+              class='form-control form-control-lg fs-6'
+              id='inputEmail'
+              name='email'
+              value='{{email}}'
+              placeholder='nama@contoh.com'
+              required
+            />
+          </div>
+
+          <div class='mb-4'>
+            <label for='inputPhone' class='form-label small fw-bold text-secondary'>
+              <i class='bi bi-telephone me-1'></i> Nomor Telepon
+            </label>
+            <input
+              type='text'
+              class='form-control form-control-lg fs-6'
+              id='inputPhone'
+              name='phone'
+              value='{{phone}}'
+              placeholder='08123456789'
+              required
+            />
+          </div>
+
+          <div class='d-grid gap-2'>
+            <button type='submit' class='btn btn-primary btn-lg fs-6 py-2'>
+              <i class='bi bi-check-circle-fill me-1'></i> Save
+            </button>
+            <a href='/customers' class='btn btn-outline-secondary py-2'>
+              Batal
+            </a>
+          </div>
+        </form>
       </div>
+
     </div>
-    <div class='row mb-3'>
-      <label for='inputEmail' class='col-sm-2 col-form-label'>Email</label>
-      <div class='col-sm-10'>
-        <input
-          type='email'
-          class='form-control'
-          id='inputEmail'
-          name='email'
-          value='{{email}}'
-          required
-        />
-      </div>
-    </div>
-    <div class='row mb-3'>
-      <label for='inputPhone' class='col-sm-2 col-form-label'>Phone</label>
-      <div class='col-sm-10'>
-        <input
-          type='text'
-          class='form-control'
-          id='inputPhone'
-          name='phone'
-          value='{{phone}}'
-          required
-        />
-      </div>
-    </div>
-    <button type='submit' class='btn btn-primary'>Save</button>
-  </form>
+  </div>
 </div>

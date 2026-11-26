@@ -9,7 +9,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const db = require('../models');
-const { getUsersInfo } = require('../utils/utils');
+const { getUsersInfo, getCustomerStats } = require('../utils/utils');
 
 // TODO: ASYNC ERROR HANDLE
 
@@ -18,17 +18,18 @@ const router = express.Router();
 
 // Display details of all users
 router.get('/', async (req, res) => {
-  let users;
+  let users = [];
   try {
     users = await db.User.findAll();
   } catch (error) {
     console.log(
       'There was an error to querying users',
-      JSON.stringify(err),
+      JSON.stringify(error),
     );
   }
   const allUsers = getUsersInfo(users);
-  res.render('home', { users: allUsers });
+  const stats = getCustomerStats(allUsers);
+  res.render('home', { users: allUsers, stats });
 });
 
 // Show add new customer form
@@ -119,8 +120,9 @@ router.get('/search/', async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  const allUsers = getUsersInfo(users);
-  res.render('home', { users: allUsers });
+  const allUsers = getUsersInfo(users || []);
+  const stats = getCustomerStats(allUsers);
+  res.render('home', { users: allUsers, stats });
 });
 
 module.exports = router;

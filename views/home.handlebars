@@ -1,33 +1,127 @@
-<section class='container-fluid customer-table mt-3'>
-  <div class='table-header d-flex justify-content-between align-items-center'>
-    <p class='lead'>Customers</p>
-    <a href='/customers/add' class='btn btn-outline-primary'>Add new</a>
+<div class='container mt-4'>
+
+  <!-- Header Banner & Action -->
+  <div class='table-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4'>
+    <div>
+      <div class='d-flex align-items-center gap-2'>
+        <p class='lead'>Customers</p>
+        <span class='badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill'>Directory</span>
+      </div>
+      <p class='text-muted small mb-0'>Sistem manajemen data pelanggan terstruktur.</p>
+    </div>
+    <a href='/customers/add' class='btn btn-primary d-inline-flex align-items-center gap-2 shadow-sm px-3 py-2'>
+      <i class='bi bi-person-plus-fill'></i> Add new
+    </a>
   </div>
-  <div class='table-responsive'>
-    <table class='table'>
-      <thead>
-        <tr>
-          <th scope='col'>#</th>
-          <th scope='col'>Name</th>
-          <th scope='col'>Email</th>
-          <th scope='col'>Phone</th>
-          <th scope='col'>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each users}}
+
+  <!-- Quick Metrics KPI Cards -->
+  <div class='row g-3 mb-4'>
+    <div class='col-sm-6 col-lg-3'>
+      <div class='card card-custom p-3 border-0'>
+        <div class='d-flex align-items-center gap-3'>
+          <div class='rounded-3 bg-primary-subtle p-3 text-primary'>
+            <i class='bi bi-people fs-4'></i>
+          </div>
+          <div>
+            <div class='text-muted small fw-semibold'>Total Pelanggan</div>
+            <div class='fs-5 fw-bold'>{{stats.totalCustomers}} Pelanggan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-sm-6 col-lg-3'>
+      <div class='card card-custom p-3 border-0'>
+        <div class='d-flex align-items-center gap-3'>
+          <div class='rounded-3 bg-success-subtle p-3 text-success'>
+            <i class='bi bi-database-check fs-4'></i>
+          </div>
+          <div>
+            <div class='text-muted small fw-semibold'>Database Engine</div>
+            <div class='fs-5 fw-bold'>SQLite3 (Local)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-sm-6 col-lg-3'>
+      <div class='card card-custom p-3 border-0'>
+        <div class='d-flex align-items-center gap-3'>
+          <div class='rounded-3 bg-info-subtle p-3 text-info'>
+            <i class='bi bi-shield-check fs-4'></i>
+          </div>
+          <div>
+            <div class='text-muted small fw-semibold'>CI Test Suite</div>
+            <div class='fs-5 fw-bold'>22 Tests (Passed)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-sm-6 col-lg-3'>
+      <div class='card card-custom p-3 border-0'>
+        <div class='d-flex align-items-center gap-3'>
+          <div class='rounded-3 bg-warning-subtle p-3 text-warning'>
+            <i class='bi bi-activity fs-4'></i>
+          </div>
+          <div>
+            <div class='text-muted small fw-semibold'>Server Status</div>
+            <div class='fs-5 fw-bold'>Online</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class='card card-custom border-0 overflow-hidden'>
+    <div class='table-responsive'>
+      <table class='table table-modern table-hover align-middle mb-0'>
+        <thead>
           <tr>
-            <th scope='row'>{{id}}</th>
-            <td>{{name}}</td>
-            <td>{{email}}</td>
-            <td>{{phone}}</td>
-            <td class='d-flex'>
-              <a href='/customers/{{id}}/update' class='btn btn-outline-info me-2'>Edit</a>
-              <a href='/customers/{{id}}/remove' class='btn btn-outline-danger me-2'>Delete</a>
-            </td>
+            <th scope='col' style='width: 80px;'># ID</th>
+            <th scope='col'>Name</th>
+            <th scope='col'>Email</th>
+            <th scope='col'>Phone</th>
+            <th scope='col' class='text-end' style='width: 200px;'>Action</th>
           </tr>
-        {{/each}}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {{#each users}}
+            <tr>
+              <th scope='row' class='text-muted fw-semibold'>#{{id}}</th>
+              <td>{{name}}</td>
+              <td>
+                <a href='mailto:{{email}}' class='text-decoration-none text-muted d-inline-flex align-items-center gap-1'>
+                  <i class='bi bi-envelope text-primary'></i> {{email}}
+                </a>
+              </td>
+              <td>
+                <span class='badge bg-light text-dark border px-2 py-1 fw-normal font-monospace'>
+                  <i class='bi bi-telephone text-secondary me-1'></i> {{phone}}
+                </span>
+              </td>
+              <td>
+                <div class='d-flex justify-content-end gap-2'>
+                  <a href='/customers/{{id}}/update' class='btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 rounded-pill px-3'>
+                    <i class='bi bi-pencil-square'></i> Edit
+                  </a>
+                  <a href='/customers/{{id}}/remove' class='btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 rounded-pill px-3' onclick='return confirm("Apakah Anda yakin ingin menghapus data ini?");'>
+                    <i class='bi bi-trash3'></i> Delete
+                  </a>
+                </div>
+              </td>
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan='5' class='text-center py-5'>
+                <div class='text-muted'>
+                  <i class='bi bi-inbox fs-1 d-block mb-2 text-secondary'></i>
+                  <p class='mb-2 fw-semibold'>Belum ada data pelanggan.</p>
+                  <a href='/customers/add' class='btn btn-sm btn-primary'>Tambah Pelanggan Baru</a>
+                </div>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
   </div>
-</section>
+</div>

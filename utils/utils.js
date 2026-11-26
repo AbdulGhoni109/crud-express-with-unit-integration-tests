@@ -24,4 +24,11 @@ function getUsersInfo(users) {
   });
 }
 
-module.exports = { getUsersInfo };
+function getCustomerStats(users = []) {
+  return { totalCustomers: Array.isArray(users) ? users.length : 0 };
+}
+
+module.exports = {
+  getUsersInfo,
+  getCustomerStats,
+};

@@ -18,6 +18,7 @@ const router = express.Router();
 
 // Display details of all users
 router.get('/', async (req, res) => {
+  const { filter } = req.query;
   let users = [];
   try {
     users = await db.User.findAll();
@@ -29,7 +30,11 @@ router.get('/', async (req, res) => {
   }
   const allUsers = getUsersInfo(users);
   const stats = getCustomerStats(allUsers);
-  res.render('home', { users: allUsers, stats });
+  const filterFavorites = filter === 'favorites';
+  const displayedUsers = filterFavorites
+    ? allUsers.filter((u) => u.isFavorite)
+    : allUsers;
+  res.render('home', { users: displayedUsers, stats, filterFavorites });
 });
 
 // Show add new customer form

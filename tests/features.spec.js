@@ -39,6 +39,18 @@ describe('Customer Stats & Favorite Integration Tests', () => {
     expect(listRes.text).toMatch(/1 Pelanggan/);
     expect(listRes.text).toMatch(/1 Favorit/);
     expect(listRes.text).toMatch(/bi-star-fill/);
+
+    await db.User.create({
+      name: 'Harbima Razan',
+      email: 'harbima@its.ac.id',
+      phone: '089876543210',
+      isFavorite: false,
+    });
+
+    const favRes = await request.get('/customers?filter=favorites');
+    expect(favRes.status).toBe(200);
+    expect(favRes.text).toContain('Abdul Ghoni');
+    expect(favRes.text).not.toContain('Harbima Razan');
   });
 
   afterAll(async () => {

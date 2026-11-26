@@ -17,6 +17,7 @@ describe('Test utils functions', () => {
         name: 'John Doe',
         email: 'johndoe@ex.com',
         phone: '01711091062',
+        isFavorite: false,
         createdAt: '',
         updatedAt: '',
       },
@@ -25,6 +26,7 @@ describe('Test utils functions', () => {
         name: 'Steve Almas',
         email: 'stevealmas@bee.com',
         phone: '01779898372',
+        isFavorite: true,
         createdAt: '',
         updatedAt: '',
       },
@@ -37,21 +39,29 @@ describe('Test utils functions', () => {
       name: 'John Doe',
       email: 'johndoe@ex.com',
       phone: '01711091062',
+      isFavorite: false,
     });
+    expect(usersInfo[1].isFavorite).toBe(true);
   });
 
   describe('getCustomerStats', () => {
-    test('returns totalCustomers matching the number of users', () => {
+    test('counts totalCustomers and favoriteCustomers', () => {
       const stats = getCustomerStats([
-        { id: 1, name: 'A', email: 'a@gmail.com', phone: '0812345678' },
-        { id: 2, name: 'B', email: 'b@gmail.com', phone: '0812345679' },
+        { id: 1, name: 'A', isFavorite: true },
+        { id: 2, name: 'B', isFavorite: false },
       ]);
-      expect(stats).toEqual({ totalCustomers: 2 });
+      expect(stats).toEqual({ totalCustomers: 2, favoriteCustomers: 1 });
     });
 
     test('returns 0 when user list is empty or invalid', () => {
-      expect(getCustomerStats([])).toEqual({ totalCustomers: 0 });
-      expect(getCustomerStats(null)).toEqual({ totalCustomers: 0 });
+      expect(getCustomerStats([])).toEqual({
+        totalCustomers: 0,
+        favoriteCustomers: 0,
+      });
+      expect(getCustomerStats(null)).toEqual({
+        totalCustomers: 0,
+        favoriteCustomers: 0,
+      });
     });
   });
 });

@@ -1,6 +1,6 @@
 /*
- * Title: Customer Stats Integration Tests
- * Description: Integration tests for the dynamic total customer count on the dashboard
+ * Title: Customer Stats & Favorite Integration Tests
+ * Description: Integration tests for total customer count and favorite toggle feature
  */
 
 const supertest = require('supertest');
@@ -9,34 +9,36 @@ const db = require('../models');
 
 const request = supertest(app);
 
-describe('Customer Dashboard Stats Integration Tests', () => {
+describe('Customer Stats & Favorite Integration Tests', () => {
   beforeAll(async () => {
     await db.User.sync({ force: true });
   });
 
-  test('should display 0 Pelanggan when database is empty', async () => {
+  test('should display 0 Pelanggan and 0 Favorit when database is empty', async () => {
     const response = await request.get('/customers');
     expect(response.status).toBe(200);
     expect(response.text).toMatch(/0 Pelanggan/);
+    expect(response.text).toMatch(/0 Favorit/);
   });
 
-  test('should display updated total customer count after adding customers', async () => {
-    await db.User.bulkCreate([
-      {
-        name: 'Abdul Ghoni',
-        email: 'abdul@example.com',
-        phone: '081234567890',
-      },
-      {
-        name: 'Harbima Razan',
-        email: 'harbima@its.ac.id',
-        phone: '089876543210',
-      },
-    ]);
+  test('should toggle favorite status for a customer and update dashboard count', async () => {
+    const user = await db.User.create({
+      name: 'Abdul Ghoni',
+      email: 'abdul@example.com',
+      phone: '081234567890',
+    });
 
-    const response = await request.get('/customers');
-    expect(response.status).toBe(200);
-    expect(response.text).toMatch(/2 Pelanggan/);
+    const toggleRes = await request.get(`/customers/${user.id}/favorite`);
+    expect(toggleRes.status).toBe(302);
+
+    const updatedUser = await db.User.findByPk(user.id);
+    expect(updatedUser.isFavorite).toBe(true);
+
+    const listRes = await request.get('/customers');
+    expect(listRes.status).toBe(200);
+    expect(listRes.text).toMatch(/1 Pelanggan/);
+    expect(listRes.text).toMatch(/1 Favorit/);
+    expect(listRes.text).toMatch(/bi-star-fill/);
   });
 
   afterAll(async () => {

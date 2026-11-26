@@ -14,18 +14,26 @@
 
 function getUsersInfo(users) {
   return users.map((userObj) => {
-    const { id, name, phone, email } = userObj;
+    const { id, name, phone, email, isFavorite } = userObj;
     return {
       id,
       name,
       phone,
       email,
+      isFavorite: Boolean(isFavorite),
     };
   });
 }
 
 function getCustomerStats(users = []) {
-  return { totalCustomers: Array.isArray(users) ? users.length : 0 };
+  if (!Array.isArray(users)) {
+    return { totalCustomers: 0, favoriteCustomers: 0 };
+  }
+  const favoriteCustomers = users.filter((u) => Boolean(u.isFavorite)).length;
+  return {
+    totalCustomers: users.length,
+    favoriteCustomers,
+  };
 }
 
 module.exports = {

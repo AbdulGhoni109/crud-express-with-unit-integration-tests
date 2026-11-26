@@ -94,6 +94,21 @@ router.get('/:userId/update', async (req, res) => {
   });
 });
 
+// Toggle favorite status for a user
+router.get('/:userId/favorite', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await db.User.findByPk(userId);
+    if (user) {
+      user.isFavorite = !user.isFavorite;
+      await user.save();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect('/customers');
+});
+
 // Remvoe users
 router.get('/:userId/remove', async (req, res) => {
   // Retrieve userId from URL

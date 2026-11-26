@@ -11,9 +11,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  User.init({ name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    phone: DataTypes.STRING }, { sequelize,
-    modelName: 'User' });
+  User.init(
+    {
+      name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      phone: DataTypes.STRING,
+      isFavorite: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'User',
+    },
+  );
   return User;
 };
